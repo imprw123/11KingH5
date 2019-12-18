@@ -20,6 +20,9 @@ export default {
     },
     mykk: {
         MyKingHistory: '/YYKing/King/MyKingHistory'
+    },
+    home: {
+        GetBanner: '/YYKing/King/GetBanner'
     }
 
 }

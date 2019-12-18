@@ -13,7 +13,7 @@
             <img :src="item.img" alt />
           </router-link>
           <router-link
-            :to="{'path':'/giftdetail',query:{'pt':item.pt,'id':item.id}}"
+            :to="{'path':'/giftdetail',query:{'pt':item.show_type,'id':item.show_detail}}"
             v-if="item.show_type == 1 || item.show_type == 2 || item.show_type == 3"
           >
             <img :src="item.img" alt />

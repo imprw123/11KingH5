@@ -2,9 +2,23 @@
   <div class="hello">
     <div class="banner">
       <swipe class="my-swipe">
-        <swipe-item class="slide1"></swipe-item>
-        <swipe-item class="slide2"></swipe-item>
-        <swipe-item class="slide3"></swipe-item>
+        <swipe-item class="slide1" v-for="item in bannerLists" :key="item.id">
+          <a :href="item.show_detail" target="_blank" v-if="item.show_type == 4">
+            <img :src="item.img" alt />
+          </a>
+          <router-link
+            :to="{'path':'/newsDetail',query:{'News_Id':item.show_detail}}"
+            v-if="item.show_type == 5"
+          >
+            <img :src="item.img" alt />
+          </router-link>
+          <router-link
+            :to="{'path':'/giftdetail',query:{'pt':item.pt,'id':item.id}}"
+            v-if="item.show_type == 1 || item.show_type == 2 || item.show_type == 3"
+          >
+            <img :src="item.img" alt />
+          </router-link>
+        </swipe-item>
       </swipe>
     </div>
 
@@ -67,12 +81,15 @@ export default {
       newsList: [],
       pageIndex: 1,
       id: "1,2,3,4",
-      NewsApi: "//cmsapi.5211game.com/NewsService/YYService/YYNews.ashx"
+      NewsApi: "//cmsapi.5211game.com/NewsService/YYService/YYNews.ashx",
+      token: window.localStorage.getItem("loginInfo"),
+      bannerLists: []
     };
   },
   mounted() {
     this.$emit("getShopCode", "首页", "首页", false);
     this.getlistNews();
+    this._GetBanner();
   },
   filters: {
     ChangeDateFormat: function(timestamp) {
@@ -106,11 +123,19 @@ export default {
           this.id +
           "&itemIds=4,12,71&Jsoncallback=?",
         data => {
-          console.log(data);
+          //  console.log(data);
           if (!data) return false;
           this.newsList = data.NewsList;
         }
       );
+    },
+    _GetBanner: function() {
+      this.$axios("post", this.$ports.home.GetBanner, {
+        st: this.token
+      }).then(response => {
+        console.log(response);
+        this.bannerLists = response.data;
+      });
     }
   }
 };
@@ -138,7 +163,11 @@ export default {
   height: 4.2rem;
   background: #000;
 }
-
+.banner img {
+  width: 7.2rem;
+  height: 4.2rem;
+  background-size: cover;
+}
 .my-swipe {
   height: 4.2rem;
   color: #fff;

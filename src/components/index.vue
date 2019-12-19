@@ -135,7 +135,9 @@ export default {
       }).then(response => {
         console.log(response);
         this.bannerLists = response.data;
-      });
+      }).catch(error=>{
+        console.log(error);
+      })
     }
   }
 };

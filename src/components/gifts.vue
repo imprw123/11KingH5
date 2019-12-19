@@ -11,7 +11,7 @@
       >
         <ul>
           <li v-for="item in giftsLists" :key="item.id">
-            <router-link :to="{'path':'/giftdetail',query:{'pt':item.privilege_type,'id':item.M_ITEM.id}}">
+            <router-link :to="{'path':'/giftdetail',query:{'pt':item.M_ITEM.privilege_type,'id':item.M_ITEM.id}}">
               <div class="giftsBox-left">
                 <img
                   v-lazy="item.M_ITEM.b_img"
@@ -100,9 +100,9 @@ export default {
         .then(function(response) {
           console.log(response.data);
          if(_that.pageIndex == 1){
-           _that.giftsLists=response.data.data;
+           _that.giftsLists=response.data;
          }else{
-            _that.giftsLists= _that.giftsLists.concat(response.data.data);
+            _that.giftsLists= _that.giftsLists.concat(response.data);
          }
           _that.pageCount=Math.ceil( Number(response.data.total ) / _that.pageSize);
          // console.log( _that.pageCount);

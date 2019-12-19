@@ -14,7 +14,7 @@
           value="tab-container1"
         >
           <mt-tab-container-item id="tab-container1">
-            <div class="giftsBox">
+            <div class="giftsBoxFuli">
               <ul>
                 <li v-for="item in 10" :key="item.id">
                   <div class="giftsBox-left">
@@ -102,13 +102,13 @@ export default {
   margin: 0 auto;
 }
 
-.giftsBox {
+.giftsBoxFuli {
   width: 6.4rem;
   overflow: hidden;
   zoom: 1;
   padding-left: 0.2rem;
 }
-.giftsBox ul li {
+.giftsBoxFuli ul li {
   width: 6.15rem;
   overflow: hidden;
   zoom: 1;
@@ -191,6 +191,6 @@ export default {
   font-weight: bold;
 }
 .page-tab-container{
-  margin-top:40px;
+  margin-top:50px;
 }
 </style>

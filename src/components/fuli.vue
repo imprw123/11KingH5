@@ -7,90 +7,222 @@
         <p @click="test('tab-container3')" v-bind:class="{'current':active == 'tab-container3'}">生日</p>
       </div>
       <div class="page-tab-container">
-        <mt-tab-container
-          class="page-tabbar-tab-container"
-          v-model="active"
-          swipeable
-          value="tab-container1"
-        >
-          <mt-tab-container-item id="tab-container1">
-            <div class="giftsBoxFuli">
-              <ul>
-                <li v-for="item in 10" :key="item.id">
-                  <div class="giftsBox-left">
-                    <img
-                      v-lazy="'http://fuss10.elemecdn.com/b/18/0678e57cb1b226c04888e7f244c20jpeg.jpeg'"
-                      alt
-                    />
+        <div class="giftsBoxFuli">
+          <mt-loadmore
+            @top-status-change="handleTopChange"
+            :top-method="loadTop"
+            :bottom-method="loadBottom"
+            :bottom-all-loaded="allLoaded"
+            ref="loadmore"
+            :auto-fill="false"
+          >
+            <ul>
+              <li v-for="(item,index) in festivalFeatured" :key="index">
+                <div class="giftsBox-left">
+                  <img
+                    v-lazy="item.b_img == null || item.b_img == '' ? 'https://img.5211game.com/Base/bg/smalldefault.png': item.b_img"
+                    alt
+                  />
+                </div>
+                <div class="giftsBoxRight">
+                  <p class="giftsName">{{item.name}}</p>
+                  <p class="giftsInfor">
+                    领取条件:
+                    <em>{{item.constraint}}</em>
+                  </p>
+                  <p class="giftsInfor">
+                    有效期:
+                    <em>{{item.show_time}}</em>
+                  </p>
+                  <div class="btnBOx">
+                    <a
+                      href="javascript:;"
+                      class="lq"
+                      v-if="item.rcv_flg == 0"
+                      @click="_RcvFestivalPkg(item.privilege_type,item.pid,item.id)"
+                    >立即领取</a>
+                    <a
+                      href="javascript:;"
+                      class="bklq"
+                      v-if="item.rcv_flg == -1"
+                      @click="_RcvFestivalPkg(item.privilege_type,item.pid,item.id)"
+                    >不可领取</a>
+                    <a
+                      href="javascript:;"
+                      class="ylq"
+                      v-if="item.rcv_flg == 1"
+                      @click="_RcvFestivalPkg(item.privilege_type,item.pid,item.id)"
+                    >已领取</a>
+                    <span>剩余:{{item.remain}}</span>
                   </div>
-                  <div class="giftsBox-right">
-                    <p class="giftsName">礼包名称</p>
-                    <p class="giftsInfor">
-                      领取条件:
-                      <em></em>
-                    </p>
-                    <p class="giftsInfor">
-                      有效期:
-                      <em></em>
-                    </p>
-                    <div class="btnBOx">
-                      <a href="javascript:;" class="lq">立即领取</a>
-                      <span>已领：XXXX/总量</span>
-                    </div>
-                    <div class="infor">
-                      <span>
-                        每月限兑:
-                        <em>0</em>/
-                        <em>1</em>
-                      </span>
-                      <span>
-                        每日限兑:
-                        <em>0</em>/
-                        <em>1</em>
-                      </span>
-                      <span>每个账号限兑1次</span>
-                    </div>
+                  <div class="infor">
+                    <span>每个账号限兑1次</span>
                   </div>
-                </li>
-              </ul>
+                </div>
+              </li>
+            </ul>
+            <div slot="top" class="mint-loadmore-top">
+              <span
+                v-show="topStatus !== 'loading'"
+                :class="{ 'rotate': topStatus === 'drop' }"
+              >下拉刷新</span>
+              <span v-show="topStatus === 'loading'">Loading...</span>
             </div>
-          </mt-tab-container-item>
-          <mt-tab-container-item id="tab-container2">
-            <mt-cell :key="n" v-for="n in 5" title="tab-container 2"></mt-cell>
-          </mt-tab-container-item>
-          <mt-tab-container-item id="tab-container3">
-            <mt-cell :key="n" v-for="n in 7" title="tab-container 3"></mt-cell>
-          </mt-tab-container-item>
-        </mt-tab-container>
+          </mt-loadmore>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { Toast } from "mint-ui";
 export default {
   name: "index",
   data() {
     return {
       msg: "",
       active: "tab-container1",
-      swipeable: true
+      swipeable: true,
+      pageIndex: 1,
+      pageSize: 10,
+      festivalFeatured: [],
+      pageCount: "",
+      allLoaded: false,
+      topStatus: "",
+      sp: 601,
+      token: window.localStorage.getItem("loginInfo")
     };
   },
   mounted() {
     this.$emit("getShopCode", "会员福利", "首页", true);
+    this._GetFestivalLst();
   },
   methods: {
+    handleTopChange(status) {
+      this.topStatus = status;
+    },
+    loadTop() {
+      // 加载更多数据
+      this.pageIndex = 1;
+      this._GetFestivalLst();
+      this.allLoaded = false;
+      this.$refs.loadmore.onTopLoaded();
+    },
+    loadBottom() {
+      // 加载更多数据
+      this.pageIndex++;
+      console.log(this.pageIndex);
+      //debugger;
+      if (this.pageIndex > this.pageCount) {
+        this.allLoaded = true;
+        this.$refs.loadmore.onBottomLoaded();
+        Toast({
+          message: "没有更多数据!",
+          iconClass: "icon icon-success"
+        });
+      } else {
+        this._GetFestivalLst();
+        this.allLoaded = false;
+        this.$refs.loadmore.onBottomLoaded();
+      }
+    },
     test(id) {
       this.active = id;
-      console.log(this.active);
+      if (id == "tab-container1") {
+        this.pageIndex = 1;
+        this.sp = 601;
+        this.allLoaded = false;
+        this._GetFestivalLst();
+      } else if (id == "tab-container2") {
+        this.pageIndex = 1;
+        this.sp = 600;
+        this.allLoaded = false;
+        this._GetFestivalLst();
+      } else if (id == "tab-container3") {
+        this.pageIndex = 1;
+        this.sp = 602;
+        this.allLoaded = false;
+        this._GetFestivalLst();
+      }
+    },
+    _GetFestivalLst: function() {
+      this.$axios("post", this.$ports.fuli.GetFestivalLst, {
+        sp: this.sp,
+        page_index: this.pageIndex,
+        page_size: this.pageSize
+      })
+        .then(response => {
+          console.log(response);
+          if (this.pageIndex == 1) {
+            this.festivalFeatured = response.data;
+          } else {
+            this.festivalFeatured = this.festivalFeatured.concat(response.data);
+          }
+          this.pageCount = Math.ceil(Number(response.total) / this.pageSize);
+        })
+        .catch(error => {
+          console.log(res);
+        });
+    },
+    //生日领取
+    _RcvFestivalPkg: function(ptid,val,id) {
+      if (this.sp == 602) {
+        this.$axios("post", this.$ports.fuli.RcvFestivalPkg, {
+          id: val,
+          st: this.token
+        })
+          .then(response => {
+            console.log(response);
+            Toast({
+              message: response.msg,
+              iconClass: "icon icon-success"
+            });
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      } else {
+        this._RcvPkg(ptid,val,id)
+      }
+    },
+    //其他领取
+    _RcvPkg: function(ptid,val,id) {
+      if (!this.token) {
+        Toast({
+          message: "请先登录!",
+          iconClass: "icon icon-success"
+        });
+        return ;
+      }
+      this.$axios("post", this.$ports.gifts.RcvPkg, {
+        st:this.token,
+        pt: ptid,
+        id:id
+      })
+        .then(response => {
+          console.log(response);
+          if (response.errCode == 0) {
+            Toast({
+              message: "兑换成功!",
+              iconClass: "icon icon-success"
+            });
+          } else {
+            Toast({
+              message: response.msg,
+              iconClass: "icon icon-success"
+            });
+          }
+
+          this._GetFestivalLst();
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   }
 };
 </script>
 <style>
-#app{
-  padding: 0px;
-}
 .fuli {
   width: 7.2rem;
   overflow: hidden;
@@ -128,7 +260,7 @@ export default {
   display: block;
   border-radius: 0.1rem;
 }
-.giftsBox-right {
+.giftsBoxRight {
   width: 4.4rem;
   min-height: 1.8rem;
   float: left;
@@ -153,9 +285,29 @@ export default {
   line-height: 0.36rem;
   text-align: center;
   color: #fff;
-  background-color: #d5b47e;
   display: inline-block;
-  border-radius: 0.1rem;
+  border-radius: 0.05rem;
+  background-color: #d5b47e;
+}
+.btnBOx a.bklq {
+  width: 1.3rem;
+  height: 0.36rem;
+  line-height: 0.36rem;
+  text-align: center;
+  color: #fff;
+  display: inline-block;
+  border-radius: 0.05rem;
+  background-color: #a5a4a4;
+}
+.btnBOx a.ylq {
+  width: 1.3rem;
+  height: 0.36rem;
+  line-height: 0.36rem;
+  text-align: center;
+  color: #fff;
+  display: inline-block;
+  border-radius: 0.05rem;
+  background-color: #a5a4a4;
 }
 .btnBOx span {
   font-size: 0.18rem;
@@ -167,12 +319,12 @@ export default {
 }
 .changeYhqCenter {
   background-color: #fff;
-  width:6.6rem;
+  width: 6.6rem;
   display: flex;
   height: 0.9rem;
-  margin:0 auto;
-  position:fixed;
-  top:40px;
+  margin: 0 auto;
+  position: fixed;
+  top: 40px;
   z-index: 1;
 }
 .changeYhqCenter p {
@@ -190,7 +342,7 @@ export default {
   color: #ffc257;
   font-weight: bold;
 }
-.page-tab-container{
-  margin-top:50px;
+.page-tab-container {
+  margin-top: 50px;
 }
 </style>

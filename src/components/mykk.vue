@@ -79,9 +79,9 @@ export default {
     },
     isTrue: function(target) {
       if (target > 0) {
-        return "+" + target;
+        return  target;
       } else if (target < 0) {
-        return "-" + target;
+        return target;
       } else {
         return target;
       }

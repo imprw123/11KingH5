@@ -30,18 +30,30 @@ Vue.component(Loadmore.name, Loadmore);
 
 router.beforeEach((to, from, next) => {
 
-        if (to.meta.cheakIsLogin) {
-            if (window.localStorage.getItem('loginInfo')) {
-                next();
-            } else {
-                Toast('请您先去登录!');
-                return;
-            }
-        } else {
+    if (to.meta.cheakIsLogin) {
+        if (window.localStorage.getItem('loginInfo')) {
             next();
+        } else {
+            Toast('请您先去登录!');
+            return;
         }
-    })
-    /* eslint-disable no-new */
+    } else {
+        next();
+    }
+});
+
+
+Vue.prototype.$isWeiXin = function() {
+    var ua = window.navigator.userAgent.toLowerCase();
+    console.log(ua); //mozilla/5.0 (iphone; cpu iphone os 9_1 like mac os x) applewebkit/601.1.46 (khtml, like gecko)version/9.0 mobile/13b143 safari/601.1
+    if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+        return true;
+    } else {
+        return false;
+    }
+};
+
+
 new Vue({
     el: '#app',
     router,

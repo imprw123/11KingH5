@@ -23,6 +23,18 @@ export default {
     },
     home: {
         GetBanner: '/YYKing/King/GetBanner'
+    },
+    active: {
+        HotActive: '/YYKing/King/HotActive'
+    },
+    dota: {
+        GetDotaPkg: '/YYKing/King/GetDotaPkg'
+    },
+    rpg: {
+        GetRpgPkg: '/YYKing/King/GetRpgPkg'
+    },
+    fuli: {
+        GetFestivalLst: '/YYKing/King/GetFestivalLst',
+        RcvFestivalPkg: '/YYKing/King/RcvFestivalPkg'
     }
-
 }

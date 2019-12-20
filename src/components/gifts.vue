@@ -11,7 +11,7 @@
       >
         <ul>
           <li v-for="item in giftsLists" :key="item.id">
-            <router-link :to="{'path':'/giftdetail',query:{'pt':item.M_ITEM.privilege_type,'id':item.M_ITEM.id}}">
+            <router-link :to="{'path':'/giftdetail',query:{'pt':item.M_ITEM.privilege_type,'id':item.M_ITEM.id,'pageTxt':'首页'}}">
               <div class="giftsBox-left">
                 <img
                   v-lazy="item.M_ITEM.b_img"
@@ -115,9 +115,6 @@ export default {
 };
 </script>
 <style>
-#app{
-  padding: 0px;
-}
 .giftsBox {
   padding-left: 0.45rem;
   height: 11rem;

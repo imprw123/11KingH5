@@ -49,20 +49,25 @@ export default {
       ptId:this.$route.query.pt,
       yd: 0,
       rcv_flg: "",
-      token:window.localStorage.getItem("loginInfo")
+      token:window.localStorage.getItem("loginInfo"),
+      pt:0,
+      id:0,
+      pageName:this.$route.query.pageTxt
     };
   },
   mounted() {
-    this.$emit("getShopCode", "礼包详情", "首页", true);
-
+    //debugger;
+    this.$emit("getShopCode", "礼包详情", "${pageName}", true);
+    this.pt=this.$route.query.pt;
+    this.id=this.$route.query.id;
     this._PkgDetail();
   },
   methods: {
     _PkgDetail: function() {
       this.$axios("post", this.$ports.gifts.PkgDetail, {
         st: this.token,
-        pt: this.$route.query.pt,
-        id: this.$route.query.id
+        pt: this.pt,
+        id: this.id
       })
         .then(response => {
           console.log(response);

@@ -3,20 +3,28 @@
     <div class="banner">
       <swipe class="my-swipe">
         <swipe-item class="slide1" v-for="item in bannerLists" :key="item.id">
-          <a :href="item.show_detail" target="_blank" v-if="item.show_type == 4">
-            <img :src="item.img" alt />
+          <a :href="item.show_detail" target="_blank" v-if="item.privilege_type == 10 && !$isWeiXin()">
+            <img v-lazy="item.img" alt />
           </a>
+
+            <router-link
+            :to="{'name':'modeContainer',params:{'mapUrl':item.show_detail,'pageName':'首页'}}"
+            v-if="item.privilege_type == 10 && $isWeiXin()"
+          >
+            <img v-lazy="item.img" alt />
+          </router-link>
+
           <router-link
             :to="{'path':'/newsDetail',query:{'News_Id':item.show_detail}}"
-            v-if="item.show_type == 5"
+            v-if="item.privilege_type == 11"
           >
-            <img :src="item.img" alt />
+            <img v-lazy="item.img" alt />
           </router-link>
           <router-link
-            :to="{'path':'/giftdetail',query:{'pt':item.show_type,'id':item.show_detail}}"
-            v-if="item.show_type == 1 || item.show_type == 2 || item.show_type == 3"
+            :to="{'path':'/giftdetail',query:{'pt':item.privilege_type,'id':item.show_detail}}"
+            v-if="item.privilege_type == 1 || item.privilege_type == 2 || item.privilege_type == 3"
           >
-            <img :src="item.img" alt />
+            <img v-lazy="item.img" alt />
           </router-link>
         </swipe-item>
       </swipe>
@@ -169,6 +177,13 @@ export default {
   width: 7.2rem;
   height: 4.2rem;
   background-size: cover;
+}
+.banner a{
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  position: relative;
 }
 .my-swipe {
   height: 4.2rem;

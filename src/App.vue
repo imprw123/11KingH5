@@ -13,7 +13,7 @@
     <mt-tabbar
       fixed
       v-model="selected"
-      v-if="pageName != '游戏礼包' && pageName != '会员福利' && pageName != '优惠券' && pageName != '热门活动'&& pageName != '礼包详情'&& pageName != '我的K值'&& pageName != '我的礼包'&& pageName != '绑定手机'&& pageName != '我的妖豆'&& pageName != '新闻详情'&& pageName != '下载11APP'&& pageName != '关注公众号'"
+      v-if="pageName != '游戏礼包' && pageName != '会员福利' && pageName != '优惠券' && pageName != '热门活动'&& pageName != '礼包详情'&& pageName != '我的K值'&& pageName != '我的礼包'&& pageName != '绑定手机'&& pageName != '我的妖豆'&& pageName != '新闻详情'&& pageName != '下载11APP'&& pageName != '关注公众号'&& pageName != '热门'"
     >
       <mt-tab-item id="首页">
         <img
@@ -97,7 +97,7 @@ export default {
   },
   watch: {
     selected: function(newVal) {
-      // console.log(newVal);
+      console.log(newVal);
       switch (newVal) {
         case "首页":
           this.$router.replace({ path: "/" });
@@ -182,7 +182,7 @@ a {
   padding: 0;
   list-style: none;
   margin-top: 40px;
-  padding-bottom: 55px;
+  margin-bottom: 55px;
 }
 .mint-tabbar {
   background-color: #282828 !important;

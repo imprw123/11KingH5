@@ -149,6 +149,7 @@ export default {
   width: 7.2rem;
   overflow: hidden;
   zoom: 1;
+  margin-bottom: 0.5rem;
 }
 .rpgBox {
   padding: 0.3rem;

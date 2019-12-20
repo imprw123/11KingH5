@@ -55,9 +55,6 @@ export default {
 </script>
 
 <style>
-#app{
-    padding: 0px;
-}
 .myYaoDou{
     background: #eeeeee;
     padding-top:0.26rem;

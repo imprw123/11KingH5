@@ -143,9 +143,6 @@ export default {
 </script>
 
 <style>
-#app {
-  padding: 0px;
-}
 .mint-loadmore{
     padding: 0.2rem 0;
 }

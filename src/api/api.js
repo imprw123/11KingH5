@@ -6,7 +6,7 @@ import { Indicator } from 'mint-ui';
 if (process.env.NODE_ENV == 'development') {
     axios.defaults.baseURL = '/api';
 } else if (process.env.NODE_ENV == 'production') {
-    axios.defaults.baseURL = 'http://192.168.8.137:9294';
+    axios.defaults.baseURL = 'https://yyking.5211game.com/';
 }
 // 请求超时时间
 axios.defaults.timeout = 10000;

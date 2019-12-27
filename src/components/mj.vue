@@ -1,6 +1,6 @@
 <template>
   <div class="mj">
-    <div class="inMj">
+    <div class="inMj" v-show="mjLists.length !=0 && mjLists != null">
       <ul>
         <li v-for="item in mjLists" :key="item.id">
           <div class="quanBg">
@@ -20,6 +20,9 @@
           </div>
         </li>
       </ul>
+    </div>
+     <div class="noListbg" v-show="mjLists.length ==0 || mjLists == null">
+        <img src="../assets/nolist.jpg" alt="">
     </div>
   </div>
 </template>
@@ -52,7 +55,7 @@ export default {
       })
         .then(response => {
           console.log("满减", response);
-          this.mjLists = response.data;
+           this.mjLists = response.data;
         })
         .catch(function(error) {
           console.log(error);
@@ -201,5 +204,18 @@ export default {
 .right p.title {
   color: #fff;
   font-size: 0.18rem;
+}
+.noListbg{
+  position: absolute;
+  width:6rem;
+  height: 4.5rem;
+  top:50%;
+  left: 50%;
+  margin-left: -3rem;
+  margin-top:-2.25rem;
+}
+.noListbg img{
+  width:6rem;
+  height: 4.5rem;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="tdProduct">
-    <div class="inTdProduct">
+    <div class="inTdProduct"  v-show="tdLists.length !=0 && tdLists != null">
       <ul>
         <li v-for="item in tdLists" :key="item.id">
           <div class="inTdProductBg">
@@ -22,6 +22,9 @@
           </div>
         </li>
       </ul>
+    </div>
+     <div class="noListbg" v-show="tdLists.length ==0 || tdLists == null">
+        <img src="../assets/nolist.jpg" alt="">
     </div>
   </div>
 </template>
@@ -53,7 +56,7 @@ export default {
       })
         .then(response => {
           console.log("特定", response);
-          this.tdLists = response.data;
+           this.tdLists = response.data;
         })
         .catch(function(error) {
           console.log(error);
@@ -221,5 +224,18 @@ export default {
 .inTdProductBg .right p.title {
   color: #fff;
   font-size: 0.18rem;
+}
+.noListbg{
+  position: absolute;
+  width:6rem;
+  height: 4.5rem;
+  top:50%;
+  left: 50%;
+  margin-left: -3rem;
+  margin-top:-2.25rem;
+}
+.noListbg img{
+  width:6rem;
+  height: 4.5rem;
 }
 </style>  

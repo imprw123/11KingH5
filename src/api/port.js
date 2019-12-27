@@ -1,40 +1,43 @@
 export default {
     yhq: {
-        GetLTPkg: '/YYKing/King/GetLTPkg'
+        GetLTPkg: '/King/GetLTPkg'
     },
     gifts: {
-        GetGamePkg: '/YYKing/King/GetGamePkg',
-        PkgDetail: '/yyking/king/PkgDetail',
-        RcvPkg: '/yyking/king/RcvPkg'
+        GetGamePkg: '/King/GetGamePkg',
+        PkgDetail: '/king/PkgDetail',
+        RcvPkg: '/king/RcvPkg'
 
     },
     my: {
-        GetUserInfo: '/YYKing/King/GetUserInfo',
-        BindBirthday: '/YYKing/King/BindBirthday',
-        MyPkgLog: '/YYKing/King/MyPkgLog',
-        MyLtLog: '/YYKing/King/MyLtLog'
+        GetUserInfo: '/King/GetUserInfo',
+        BindBirthday: '/King/BindBirthday',
+        MyPkgLog: '/King/MyPkgLog',
+        MyLtLog: '/King/MyLtLog'
     },
     yd: {
-        GetMyYd: '/YYKing/King/GetMyYd',
-        Sign: '/YYKing/King/Sign'
+        GetMyYd: '/King/GetMyYd',
+        Sign: '/King/Sign'
     },
     mykk: {
-        MyKingHistory: '/YYKing/King/MyKingHistory'
+        MyKingHistory: '/King/MyKingHistory'
     },
     home: {
-        GetBanner: '/YYKing/King/GetBanner'
+        GetBanner: '/King/GetBanner'
     },
     active: {
-        HotActive: '/YYKing/King/HotActive'
+        HotActive: '/King/HotActive'
     },
     dota: {
-        GetDotaPkg: '/YYKing/King/GetDotaPkg'
+        GetDotaPkg: '/King/GetDotaPkg'
     },
     rpg: {
-        GetRpgPkg: '/YYKing/King/GetRpgPkg'
+        GetRpgPkg: '/King/GetRpgPkg'
     },
     fuli: {
-        GetFestivalLst: '/YYKing/King/GetFestivalLst',
-        RcvFestivalPkg: '/YYKing/King/RcvFestivalPkg'
+        GetFestivalLst: '/King/GetFestivalLst',
+        RcvFestivalPkg: '/King/RcvFestivalPkg'
+    },
+    myYaoDou: {
+        MyYdHistory: '/King/MyYdHistory'
     }
 }

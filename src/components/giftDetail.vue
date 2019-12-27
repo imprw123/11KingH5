@@ -131,14 +131,16 @@ export default {
 }
 .giftDetailBanner {
   width: 6.6rem;
-  height: 3rem;
+  height: 3.48rem;
   background: #000;
   margin-bottom: 0.38rem;
+   border-radius: 0.3rem;
 }
 .giftDetailBanner img {
   width: 6.6rem;
-  height: 3rem;
+  height: 3.48rem;
   background-size: cover;
+  border-radius: 0.3rem;
 }
 .jinfen {
   font-size: 0.28rem;

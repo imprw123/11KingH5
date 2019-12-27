@@ -7,7 +7,7 @@
       </div>
 
       <div class="giftRecordBox" v-show="flag">
-        <ul v-for="item in giftslist" :key="item.id">
+        <ul v-for="(item,index) in giftslist" :key="index" v-show="giftslist.length != 0 && giftslist!= null">
           <li>
             <div class="giftRecordleft">
               <img
@@ -32,10 +32,13 @@
             </div>
           </li>
         </ul>
+        <div class="noListbg" v-show="giftslist.length ==0 || giftslist == null">
+          <img src="../assets/nolist.jpg" alt />
+        </div>
       </div>
 
       <div class="giftRecordBox" v-show="!flag">
-        <ul v-for="(item,index) in giftslist" :key="index">
+        <ul v-for="(item,index) in giftslist" :key="index" v-show="giftslist.length != 0 && giftslist!= null">
           <li>
             <a href="javascript:;" class="cope" @click="COPE(index)">{{copyName}}</a>
             <div class="giftRecordleft">
@@ -52,7 +55,9 @@
               </div>
               <div class="giftRow">
                 <span class="ttName">礼包内容:</span>
-                <span class="ttContext"><input type="text" ref="codeCDK" disabled="true" v-bind:value="item.show_desc" ></span>
+                <span class="ttContext">
+                  <input type="text" ref="codeCDK" disabled="true" v-bind:value="item.show_desc" />
+                </span>
               </div>
               <div class="giftRow">
                 <span class="ttName">使用方法:</span>
@@ -61,6 +66,9 @@
             </div>
           </li>
         </ul>
+        <div class="noListbg" v-show="giftslist.length ==0 || giftslist == null">
+          <img src="../assets/nolist.jpg" alt />
+        </div>
       </div>
     </div>
   </div>
@@ -76,7 +84,7 @@ export default {
       pageIndex: 1,
       pageSize: 10,
       ptId: 2,
-      copyName:'复制cdk码'
+      copyName: "复制cdk码"
     };
   },
   filters: {
@@ -132,59 +140,59 @@ export default {
         this._MyPkgLog();
       }
     },
-    COPE:function(val){
+    COPE: function(val) {
       console.log(val);
-     this._copyToClipboard(this.$refs.codeCDK[val]);
+      this._copyToClipboard(this.$refs.codeCDK[val]);
     },
-     //复制cdk
-    _copyToClipboard: function (elem) {
+    //复制cdk
+    _copyToClipboard: function(elem) {
       //debugger;
-        // create hidden text element, if it doesn't already exist
-        var targetId = "_hiddenCopyText_";
-        var isInput = elem.tagName === "INPUT" || elem.tagName === "TEXTAREA";
-        var origSelectionStart, origSelectionEnd;
-        if (isInput) {
-            // can just use the original source element for the selection and copy
-            target = elem;
-            origSelectionStart = elem.selectionStart;
-            origSelectionEnd = elem.selectionEnd;
-        } else {
-            // must use a temporary form element for the selection and copy
-            target = document.getElementById(targetId);
-            if (!target) {
-                var target = document.createElement("textarea");
-                target.style.position = "absolute";
-                target.style.left = "-9999px";
-                target.style.top = "0";
-                target.id = targetId;
-                document.body.appendChild(target);
-            }
-            target.textContent = elem.textContent;
+      // create hidden text element, if it doesn't already exist
+      var targetId = "_hiddenCopyText_";
+      var isInput = elem.tagName === "INPUT" || elem.tagName === "TEXTAREA";
+      var origSelectionStart, origSelectionEnd;
+      if (isInput) {
+        // can just use the original source element for the selection and copy
+        target = elem;
+        origSelectionStart = elem.selectionStart;
+        origSelectionEnd = elem.selectionEnd;
+      } else {
+        // must use a temporary form element for the selection and copy
+        target = document.getElementById(targetId);
+        if (!target) {
+          var target = document.createElement("textarea");
+          target.style.position = "absolute";
+          target.style.left = "-9999px";
+          target.style.top = "0";
+          target.id = targetId;
+          document.body.appendChild(target);
         }
-        // select the content
-        var currentFocus = document.activeElement;
-        target.focus();
-        target.setSelectionRange(0, target.value.length);
-        // copy the selection
-        var succeed;
-        try {
-            succeed = document.execCommand("copy");
-        } catch (e) {
-            succeed = false;
-        }
-        // restore original focus
-        if (currentFocus && typeof currentFocus.focus === "function") {
-            currentFocus.focus();
-        }
-        if (isInput) {
-            // restore prior selection
-            elem.setSelectionRange(origSelectionStart, origSelectionEnd);
-        } else {
-            // clear temporary content
-            target.textContent = "";
-        }
-        this.copyName="复制成功";
-        return succeed;
+        target.textContent = elem.textContent;
+      }
+      // select the content
+      var currentFocus = document.activeElement;
+      target.focus();
+      target.setSelectionRange(0, target.value.length);
+      // copy the selection
+      var succeed;
+      try {
+        succeed = document.execCommand("copy");
+      } catch (e) {
+        succeed = false;
+      }
+      // restore original focus
+      if (currentFocus && typeof currentFocus.focus === "function") {
+        currentFocus.focus();
+      }
+      if (isInput) {
+        // restore prior selection
+        elem.setSelectionRange(origSelectionStart, origSelectionEnd);
+      } else {
+        // clear temporary content
+        target.textContent = "";
+      }
+      this.copyName = "复制成功";
+      return succeed;
     }
   }
 };
@@ -285,12 +293,25 @@ export default {
   overflow: hidden;
   zoom: 1;
 }
-.giftRow span.ttContext input{
-  border:none;
-  width:3.1rem;
-   color: #b9b9b9;
-   overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+.giftRow span.ttContext input {
+  border: none;
+  width: 3.1rem;
+  color: #b9b9b9;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.noListbg{
+  position: absolute;
+  width:6rem;
+  height: 4.5rem;
+  top:50%;
+  left: 50%;
+  margin-left: -3rem;
+  margin-top:-2.25rem;
+}
+.noListbg img{
+  width:6rem;
+  height: 4.5rem;
 }
 </style>

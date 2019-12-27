@@ -70,7 +70,7 @@
         <!-- <li>
           <i class="kk"></i>
           <span>我的K值</span>
-        </li> -->
+        </li>-->
         <li>
           <i class="cards"></i>
           <span>
@@ -83,12 +83,12 @@
             <router-link :to="{'path':'/giftRecordList'}">我的礼包</router-link>
           </span>
         </li>
-        <li>
+        <li @click="wxOpen('active')">
           <i class="wz"></i>
           <span>妖妖KING章程</span>
         </li>
         <li>
-          <a href="javascript:;" @click="wxOpen">
+          <a href="javascript:;" @click="wxOpen('wx')">
             <i class="focus"></i>
             <span>关注公众号</span>
           </a>
@@ -102,10 +102,33 @@
         <li>
           <i class="link"></i>
           <span>
-            <a href="tel:400-0000-688">联系客服</a>
+            <a href="tel:021-23099155">联系客服</a>
           </span>
         </li>
       </ul>
+      <mt-popup v-model="changeVisble1" position="center">
+        <img v-lazy="'https://img.5211game.com/Base/bg/dingyue.jpg'" class="wxCode" />
+      </mt-popup>
+
+      <mt-popup v-model="changeVisble2" position="right">
+        <div class="boxActive">
+          <h2>妖妖KING细则</h2>
+        <p>1.妖妖KING等级对照表</p>
+        <p>K1 100000 K值</p>
+        <p>K2 500000 K值</p>
+        <p>K3 1500000 K值</p>
+        <p>K4 5000000 K值</p>
+        <p>K5 10000000 K值</p>
+        <p>K6 20000000 K值</p>
+        <p>2.每消费1RMB=100K值，在11平台进行消费的账号均可累计K值，有特殊说明的除外</p>
+        <p>3.KING值有效期为365天，如您在2019年12月6日消费1元获得100K值，则该K值会365天后失效（具体变化可在会员中心查看K值记录）</p>
+        <p>4.KING会员可领取对应等级的福利及礼包（详情见会员中心，依实际情况调整）</p>
+        <p>5.不同等级KING会员，兑换部分礼包时，所享受的折扣价格不同</p>
+        <p>6.KING会员可在会员中心设置生日，每年生日月可领取生日礼包，生日仅可设置一次</p>
+        <p>7.KING会员等级在本账号累计，不可转让</p>
+        <p>8.如使用赠送功能，则赠送者账号增加对应K值，被赠送者不可增加</p>
+        </div>
+      </mt-popup>
     </div>
   </div>
 </template>
@@ -114,6 +137,7 @@
 import { Toast } from "mint-ui";
 import { MessageBox } from "mint-ui";
 import $ from "jquery";
+import { mapState } from "vuex";
 export default {
   name: "index",
   data() {
@@ -124,15 +148,15 @@ export default {
       SiteId: 50008,
       ServerId: 7,
       userInforFlag: false,
-      user_name: "",
-      icon: "",
-      yd_value: 0,
       k_value: 0,
       mobile: "",
       pickerValue: "",
       isClicked: false,
       year: "",
-      birthday: ""
+      birthday: "",
+      changeVisble1:false,
+      changeVisble2:false,
+      popupVisible: false
     };
   },
   created() {
@@ -155,6 +179,13 @@ export default {
       this.userInforFlag = true;
     }
     this._GetUserInfo();
+  },
+  computed: {
+    ...mapState({
+      user_name: state => state.userName,
+      icon: state => state.userImgSrc,
+      yd_value: state => state.myYaoDou
+    })
   },
   methods: {
     stringFormat: function() {
@@ -191,10 +222,13 @@ export default {
         .then(function(response) {
           //  debugger;
           console.log(response.data);
-          _that.user_name = response.data.user_name;
-          _that.icon = response.data.icon;
+          _that.$store.dispatch("USERNAME", response.data.user_name);
+          _that.$store.dispatch("USERIMGSRC", response.data.icon);
           _that.birthday = response.data.birthday;
-          _that.yd_value = response.data.yd_value;
+          _that.$store.dispatch("MYYAODOU", response.data.yd_value);
+          var num =
+            Number(response.data.yd_value) - Number(response.data.yd_free);
+          _that.$store.dispatch("REALYYAODOU", num);
           _that.k_value = response.data.k_value;
           // debugger;
           if (!response.data.mobile) {
@@ -266,17 +300,22 @@ export default {
           console.log(error);
         });
     },
-    wxOpen: function() {
-      var ua = navigator.userAgent.toLowerCase();
-      if (ua.match(/MicroMessenger/i) == "micromessenger") {
-        //this.$router.push({'path':'/careWx'});
-         //window.location.href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzU4MTE2MjgwNA==#wechat_redirect";
-      } else {
-        Toast({
-          message: "仅支持在微信浏览器内打开!",
-          iconClass: "icon icon-success"
-        });
+    wxOpen: function(val) {
+      if(val == 'wx'){
+         this.changeVisble1 = this.popupVisible=true;
+      }else if(val == 'active'){
+          this.changeVisble2 = this.popupVisible=true;
       }
+      
+      // var ua = navigator.userAgent.toLowerCase();
+      // if (ua.match(/MicroMessenger/i) != "micromessenger") {
+
+      // } else {
+      //   Toast({
+      //     message: "仅支持在微信浏览器内打开!",
+      //     iconClass: "icon icon-success"
+      //   });
+      // }
     },
     loadApp: function() {
       this.$router.push({ path: "/loadApp" });
@@ -487,5 +526,18 @@ export default {
 }
 .myBrithday span {
   display: inline-block;
+}
+.wxCode {
+  width: 5rem;
+  height: 5rem;
+}
+.boxActive{
+  width:5.6rem;
+  padding: 0.5rem;
+  text-align: center;
+}
+.boxActive p{
+  line-height: 0.4rem;
+  text-align: justify;
 }
 </style>

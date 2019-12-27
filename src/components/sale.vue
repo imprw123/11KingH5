@@ -1,6 +1,6 @@
 <template>
   <div class="sale">
-    <div class="inSale">
+    <div class="inSale" v-show="saleLists.length !=0 && saleLists != null">
       <ul>
         <li v-for="item in saleLists" :key="item.id">
           <div class="saleQuanBg">
@@ -20,6 +20,9 @@
           </div>
         </li>
       </ul>
+    </div>
+    <div class="noListbg"  v-show="saleLists.length ==0 || saleLists == null">
+        <img src="../assets/nolist.jpg" alt="">
     </div>
   </div>
 </template>
@@ -199,5 +202,18 @@ export default {
 .saleQuanBg .right p.title {
   color: #fff;
   font-size: 0.18rem;
+}
+.noListbg{
+  position: absolute;
+  width:6rem;
+  height: 4.5rem;
+  top:50%;
+  left: 50%;
+  margin-left: -3rem;
+  margin-top:-2.25rem;
+}
+.noListbg img{
+  width:6rem;
+  height: 4.5rem;
 }
 </style>

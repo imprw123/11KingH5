@@ -7,20 +7,19 @@
         <span class="td" @click="changeTest('td')"></span>
       </div>
       <!-- 折扣券 -->
-      <div class="boxBig" v-show="saleFlag" >
+      <div class="boxBig" v-show="saleFlag">
         <saleBox></saleBox>
       </div>
       <!-- 折扣券 -->
 
       <!-- 满减券 -->
-      <div class="boxBig" v-show="mjFlag" >
+      <div class="boxBig" v-show="mjFlag">
         <mjBox ref="mj"></mjBox>
       </div>
       <!-- 满减券 -->
 
-
-       <!-- 特定券 -->
-      <div class="boxBig" v-show="tdFlag" > 
+      <!-- 特定券 -->
+      <div class="boxBig" v-show="tdFlag">
         <tdBox ref="td"></tdBox>
       </div>
       <!-- 特定券 -->
@@ -43,31 +42,47 @@ export default {
     };
   },
   mounted() {
-    this.$emit("getShopCode", "优惠券", "首页", true);
+    if (this.$route.query.changeType == "sale") {
+      this.$emit("getShopCode", "优惠券", "妖豆", true);
+    } else if (this.$route.query.changeType == "mj") {
+      this.saleFlag = false;
+      this.mjFlag = true;
+      this.tdFlag = false;
+      this.$refs.mj._getLtpkg();
+       this.$emit("getShopCode", "优惠券", "妖豆", true);
+    } else if (this.$route.query.changeType == "td") {
+      this.saleFlag = false;
+      this.mjFlag = false;
+      this.tdFlag = true;
+      this.$refs.td._getLtpkg();
+       this.$emit("getShopCode", "优惠券", "妖豆", true);
+    } else {
+      this.$emit("getShopCode", "优惠券", "首页", true);
+    }
   },
   methods: {
-      changeTest:function(val){
-          if(val =='sale'){
-              this.saleFlag=true;
-              this.mjFlag=false;
-              this.tdFlag=false;
-          }else if(val == 'mj'){
-               this.saleFlag=false;
-              this.mjFlag=true;
-              this.tdFlag=false;
-               this.$refs.mj._getLtpkg();
-          }else if(val == 'td'){
-               this.saleFlag=false;
-              this.mjFlag=false;
-              this.tdFlag=true;
-               this.$refs.td._getLtpkg();
-          }
+    changeTest: function(val) {
+      if (val == "sale") {
+        this.saleFlag = true;
+        this.mjFlag = false;
+        this.tdFlag = false;
+      } else if (val == "mj") {
+        this.saleFlag = false;
+        this.mjFlag = true;
+        this.tdFlag = false;
+        this.$refs.mj._getLtpkg();
+      } else if (val == "td") {
+        this.saleFlag = false;
+        this.mjFlag = false;
+        this.tdFlag = true;
+        this.$refs.td._getLtpkg();
       }
+    }
   },
   components: {
     saleBox: sale,
     mjBox: mj,
-    tdBox:td
+    tdBox: td
   }
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div class="active">
-    <div class="inActive">
+    <div class="inActive"  v-show="activeLists.length !=0 && activeLists != null">
       <ul>
         <li v-for="(item,index) in activeLists" :key="index">
           <div class="activeBanner">
@@ -34,6 +34,9 @@
           </p>
         </li>
       </ul>
+    </div>
+       <div class="noListbg"  v-show="activeLists.length ==0 || activeLists == null">
+        <img src="../assets/nolist.jpg" alt="">
     </div>
   </div>
 </template>
@@ -90,14 +93,14 @@ export default {
 }
 .activeBanner {
   width: 6.6rem;
-  height: 3rem;
+  height: 3.48rem;
   background-color: #000;
   margin-bottom: 0.2rem;
   border-radius: 0.14rem;
 }
 .activeBanner img {
   width: 6.6rem;
-  height: 3rem;
+  height: 3.48rem;
   border-radius: 0.14rem;
 }
 .activeTitle {
@@ -108,5 +111,18 @@ export default {
 .dateTimeTitle {
   font-size: 0.22rem;
   color: #b9b9b9;
+}
+.noListbg{
+  position: absolute;
+  width:6rem;
+  height: 4.5rem;
+  top:50%;
+  left: 50%;
+  margin-left: -3rem;
+  margin-top:-2.25rem;
+}
+.noListbg img{
+  width:6rem;
+  height: 4.5rem;
 }
 </style>

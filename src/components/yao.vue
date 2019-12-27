@@ -29,13 +29,19 @@
     <div class="pag">
       <ul>
         <li>
-          <img src="../assets/zhekou.png" alt />
+          <router-link :to="{'path':'/yhqCenter',query:{changeType:'sale'}}">
+            <img src="../assets/zhekou.png" alt />
+          </router-link>
         </li>
         <li class="current">
-          <img src="../assets/manjian.png" alt />
+          <router-link :to="{'path':'/yhqCenter',query:{changeType:'mj'}}">
+            <img src="../assets/manjian.png" alt />
+          </router-link>
         </li>
         <li>
-          <img src="../assets/tdproduct.png" alt />
+          <router-link :to="{'path':'/yhqCenter',query:{changeType:'td'}}">
+            <img src="../assets/tdproduct.png" alt />
+          </router-link>
         </li>
         <li class="current">
           <img src="../assets/jqqd.png" alt />

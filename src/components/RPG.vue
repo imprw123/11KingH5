@@ -157,7 +157,7 @@ export default {
   zoom: 1;
 }
 .rpgBoxTitle {
-  font-size: 0.28rem;
+  font-size: 0.35rem;
   margin-bottom: 0.2rem;
 }
 .rpgAdvance a {
@@ -167,13 +167,13 @@ export default {
 }
 .rpgAdvance {
   width: 6.6rem;
-  height: 1.9rem;
+  height:  3.48rem;
   margin: 0 auto;
   margin-bottom: 0.25rem;
 }
 .rpgAdvance img {
   width: 6.6rem;
-  height: 1.9rem;
+  height: 3.48rem;
   border-radius: 0.2rem;
 }
 .rpgList {

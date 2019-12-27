@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import store from './store' //引入store
 import { Swipe, SwipeItem } from 'vue-swipe';
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
@@ -11,10 +12,12 @@ import { Toast } from 'mint-ui';
 import request from './api/api.js';
 import ports from './api/port.js'
 import { TabContainer, TabContainerItem } from 'mint-ui';
+import { Popup } from 'mint-ui';
 import { DatetimePicker } from 'mint-ui';
 Vue.component(DatetimePicker.name, DatetimePicker);
 Vue.component(TabContainer.name, TabContainer);
 Vue.component(TabContainerItem.name, TabContainerItem);
+Vue.component(Popup.name, Popup);
 Vue.prototype.$axios = request;
 Vue.prototype.$ports = ports;
 Vue.use(Lazyload);
@@ -54,9 +57,34 @@ Vue.prototype.$isWeiXin = function() {
 };
 
 
+Vue.filter('myDateFilter', function(timestamp) {
+    var date = new Date(
+        parseInt(timestamp.replace("/Date(", "").replace(")/", ""), 10)
+    );
+    var Y = date.getFullYear() + "-";
+    var M =
+        (date.getMonth() + 1 < 10 ?
+            "0" + (date.getMonth() + 1) :
+            date.getMonth() + 1) + "";
+    var D =
+        (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) + " ";
+    var h =
+        (date.getHours() < 10 ? "0" + date.getHours() : date.getHours()) + ":";
+    var m =
+        (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()) +
+        ":";
+    var s =
+        date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+    return Y + M
+
+})
+
+
+
 new Vue({
     el: '#app',
     router,
+    store,
     components: { App },
     template: '<App/>'
 })

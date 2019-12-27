@@ -8,8 +8,8 @@
       </div>
     </div>
     <div class="yhqBox" v-show="flag">
-      <ul>
-        <li v-for="item in recentLQ" :key="item.id">
+      <ul v-show="recentLQ.length != 0 && recentLQ.length != null">
+        <li v-for="(item,index) in recentLQ" :key="index">
           <div class="yhqBg">
             <i class="count" v-show="item.pt == 8 || item.pt == 5 "></i>
             <i class="saleBtn" v-show="item.pt == 7 || item.pt == 6"></i>
@@ -25,11 +25,14 @@
           </div>
         </li>
       </ul>
+      <div class="noListbg" v-show="recentLQ.length ==0 || recentLQ == null">
+      <img src="../assets/nolist.jpg" alt="">
+      </div>
     </div>
 
     <div class="yhqBox" v-show="flag01">
-      <ul>
-        <li v-for="item in recentLQ" :key="item.id">
+      <ul  v-show="recentLQ.length != 0 && recentLQ.length != null">
+        <li v-for="(item,index) in recentLQ" :key="index">
           <div class="yhqBg hasUseBg">
             <i class="countHasUse" v-show="item.pt == 5 || item.pt == 8"></i>
             <i class="hasSale" v-show="item.pt == 6 || item.pt == 7"></i>
@@ -45,11 +48,14 @@
           </div>
         </li>
       </ul>
+       <div class="noListbg" v-show="recentLQ.length ==0 || recentLQ == null">
+      <img src="../assets/nolist.jpg" alt="">
+      </div>
     </div>
 
     <div class="yhqBox" v-show="flag02">
-      <ul>
-        <li v-for="item in recentLQ" :key="item.id">
+      <ul  v-show="recentLQ.length != 0 && recentLQ.length != null">
+        <li v-for="(item,index) in recentLQ" :key="index">
           <div class="yhqBg hasUseBg lostBg">
             <i class="countHasUse" v-show="item.pt == 5 || item.pt == 8"></i>
             <i class="hasSale" v-show="item.pt == 6 || item.pt == 7"></i>
@@ -65,6 +71,9 @@
           </div>
         </li>
       </ul>
+       <div class="noListbg" v-show="recentLQ.length ==0 || recentLQ == null">
+      <img src="../assets/nolist.jpg" alt="">
+      </div>
     </div>
   </div>
 </template>
@@ -123,7 +132,7 @@ export default {
       })
         .then(response => {
           console.log(response);
-          this.recentLQ = response.data;
+           this.recentLQ = response.data;
         })
         .catch(error => {
           console.log(error);
@@ -326,5 +335,18 @@ export default {
 }
 .hasUseBg .right p.title {
   color: #b9b9b9;
+}
+.noListbg{
+  position: absolute;
+  width:6rem;
+  height: 4.5rem;
+  top:50%;
+  left: 50%;
+  margin-left: -3rem;
+  margin-top:-2.25rem;
+}
+.noListbg img{
+  width:6rem;
+  height: 4.5rem;
 }
 </style>

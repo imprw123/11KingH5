@@ -6,7 +6,7 @@
         <p @click="test('tab-container2')" v-bind:class="{'current':active == 'tab-container2'}">节日</p>
         <p @click="test('tab-container3')" v-bind:class="{'current':active == 'tab-container3'}">生日</p>
       </div>
-      <div class="page-tab-container">
+      <div class="page-tab-container"  v-show="festivalFeatured.length !=0 && festivalFeatured != null">
         <div class="giftsBoxFuli">
           <mt-loadmore
             @top-status-change="handleTopChange"
@@ -71,6 +71,9 @@
           </mt-loadmore>
         </div>
       </div>
+    </div>
+      <div class="noListbg"  v-show="festivalFeatured.length ==0 || festivalFeatured == null">
+        <img src="../assets/nolist.jpg" alt="">
     </div>
   </div>
 </template>
@@ -154,7 +157,7 @@ export default {
         .then(response => {
           console.log(response);
           if (this.pageIndex == 1) {
-            this.festivalFeatured = response.data;
+             this.festivalFeatured = response.data;
           } else {
             this.festivalFeatured = this.festivalFeatured.concat(response.data);
           }
@@ -344,5 +347,18 @@ export default {
 }
 .page-tab-container {
   margin-top: 50px;
+}
+.noListbg{
+  position: absolute;
+  width:6rem;
+  height: 4.5rem;
+  top:50%;
+  left: 50%;
+  margin-left: -3rem;
+  margin-top:-2.25rem;
+}
+.noListbg img{
+  width:6rem;
+  height: 4.5rem;
 }
 </style>

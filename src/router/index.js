@@ -21,6 +21,7 @@ import LOGIN from '@/components/login'
 import GIFTRECORDLIST from '@/components/giftRecordList'
 import NEWSDETAIL from '@/components/newsDetail'
 import LOADAPP from '@/components/loadApp'
+import MODECONTAINER from '@/components/modeContainer'
 Vue.use(Router)
 
 export default new Router({
@@ -132,7 +133,10 @@ export default new Router({
         {
             path: '/giftRecordList',
             name: 'giftRecordList',
-            component: GIFTRECORDLIST
+            component: GIFTRECORDLIST,
+            meta: {
+                cheakIsLogin: true
+            }
         },
         {
             path: '/newsDetail',
@@ -143,6 +147,11 @@ export default new Router({
             path: '/loadApp',
             name: 'loadApp',
             component: LOADAPP
+        },
+        {
+            path: '/modeContainer',
+            name: 'modeContainer',
+            component: MODECONTAINER
         }
     ]
 })

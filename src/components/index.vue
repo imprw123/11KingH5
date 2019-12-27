@@ -2,12 +2,16 @@
   <div class="hello">
     <div class="banner">
       <swipe class="my-swipe">
-        <swipe-item class="slide1" v-for="item in bannerLists" :key="item.id">
-          <a :href="item.show_detail" target="_blank" v-if="item.privilege_type == 10 && !$isWeiXin()">
+        <swipe-item class="slide1" v-for="(item,index) in bannerLists" :key="index">
+          <a
+            :href="item.show_detail"
+            target="_blank"
+            v-if="item.privilege_type == 10 && !$isWeiXin()"
+          >
             <img v-lazy="item.img" alt />
           </a>
 
-            <router-link
+          <router-link
             :to="{'name':'modeContainer',params:{'mapUrl':item.show_detail,'pageName':'首页'}}"
             v-if="item.privilege_type == 10 && $isWeiXin()"
           >
@@ -26,8 +30,22 @@
           >
             <img v-lazy="item.img" alt />
           </router-link>
+
+          <router-link :to="{'path':item.url}" v-if="item.privilege_type == 'default' ">
+            <img v-lazy="item.img" alt />
+          </router-link>
         </swipe-item>
       </swipe>
+
+      <!-- 默认 banner-->
+      <!-- <swipe class="my-swipe" v-if="bannerLists == null  || bannerLists.length == 0">
+        <swipe-item v-for="(obj,index) in defaultBanner" :key="index">
+          <router-link :to="{'path':obj.url}">
+            <img v-lazy="obj.img" alt />
+          </router-link>
+        </swipe-item>
+      </swipe>-->
+      <!-- 默认banner   -->
     </div>
 
     <div class="funProduct">
@@ -67,7 +85,7 @@
     <div class="newsLists">
       <ul>
         <!-- <a v-bind:href="item.News_RedirectUrl == ''? item.News_URL.replace('http:',''):item.News_RedirectUrl.replace('http:','')" target="_blank"> -->
-        <li v-for="item in newsList" :key="item.id">
+        <li v-for="(item,index) in newsList" :key="index">
           <router-link :to="{'path':'/newsDetail',query:{'News_Id':item.News_Id}}">
             <em>{{item.Category_Name}}</em>
             <span>{{item.News_Title}}</span>
@@ -87,6 +105,23 @@ export default {
     return {
       msg: "",
       newsList: [],
+      defaultBanner: [
+        {
+          img: "https://img.5211game.com/Base/bg/banner01.png",
+          url: "/yao",
+          privilege_type: "default"
+        },
+        {
+          img: "https://img.5211game.com/Base/bg/banner02.png",
+          url: "/gitfs",
+          privilege_type: "default"
+        },
+        {
+          img: "https://img.5211game.com/Base/bg/banner03.png",
+          url: "/fuli",
+          privilege_type: "default"
+        }
+      ],
       pageIndex: 1,
       id: "1,2,3,4",
       NewsApi: "//cmsapi.5211game.com/NewsService/YYService/YYNews.ashx",
@@ -140,12 +175,18 @@ export default {
     _GetBanner: function() {
       this.$axios("post", this.$ports.home.GetBanner, {
         st: this.token
-      }).then(response => {
-        console.log(response);
-        this.bannerLists = response.data;
-      }).catch(error=>{
-        console.log(error);
       })
+        .then(response => {
+          console.log(response);
+          if (response.data == null || response.data.length == 0) {
+            this.bannerLists = this.defaultBanner;
+          } else {
+            this.bannerLists = response.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   }
 };
@@ -170,15 +211,15 @@ export default {
 
 .banner {
   width: 7.2rem;
-  height: 4.2rem;
+  height: 3.8rem;
   background: #000;
 }
 .banner img {
   width: 7.2rem;
-  height: 4.2rem;
+  height: 3.8rem;
   background-size: cover;
 }
-.banner a{
+.banner a {
   display: inline-block;
   width: 100%;
   height: 100%;
@@ -186,14 +227,14 @@ export default {
   position: relative;
 }
 .my-swipe {
-  height: 4.2rem;
+  height:  3.8rem;
   color: #fff;
   font-size: 0.3rem;
   text-align: center;
 }
 
 .slide1 {
-  background-color: #0089dc;
+  background-color: #000;
   color: #fff;
 }
 

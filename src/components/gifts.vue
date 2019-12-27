@@ -1,6 +1,6 @@
 <template>
-  <div class="git">
-    <div class="giftsBox">
+  <div class="gift">
+    <div class="giftsBox" v-show="giftsLists.length !=0 && giftsLists != null ">
       <mt-loadmore
         @top-status-change="handleTopChange"
         :top-method="loadTop"
@@ -35,6 +35,10 @@
           <span v-show="topStatus === 'loading'">Loading...</span>
         </div>
       </mt-loadmore>
+    </div>
+
+    <div class="noListbg" v-show="giftsLists.length ==0 || giftsLists == null ">
+        <img src="../assets/nolist.jpg" alt="">
     </div>
   </div>
 </template>
@@ -100,7 +104,7 @@ export default {
         .then(function(response) {
           console.log(response.data);
          if(_that.pageIndex == 1){
-           _that.giftsLists=response.data;
+          _that.giftsLists=response.data;
          }else{
             _that.giftsLists= _that.giftsLists.concat(response.data);
          }
@@ -115,6 +119,10 @@ export default {
 };
 </script>
 <style>
+.gift{
+  position: relative;
+  min-height: 11rem;
+}
 .giftsBox {
   padding-left: 0.45rem;
   height: 11rem;
@@ -189,5 +197,18 @@ export default {
   font-size: 0.18rem;
   color: #b9b9b9;
   margin-left: 0.1rem;
+}
+.noListbg{
+  position: absolute;
+  width:6rem;
+  height: 4.5rem;
+  top:50%;
+  left: 50%;
+  margin-left: -3rem;
+  margin-top:-2.25rem;
+}
+.noListbg img{
+  width:6rem;
+  height: 4.5rem;
 }
 </style>

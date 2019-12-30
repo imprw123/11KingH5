@@ -28,20 +28,18 @@
     </div>
     <div class="pag">
       <ul>
-        <li>
-          <router-link :to="{'path':'/yhqCenter',query:{changeType:'sale'}}">
+        <li @click="openYHQ('sale')">
             <img src="../assets/zhekou.png" alt />
-          </router-link>
         </li>
-        <li class="current">
-          <router-link :to="{'path':'/yhqCenter',query:{changeType:'mj'}}">
+        <li class="current" @click="openYHQ('mj')">
+
             <img src="../assets/manjian.png" alt />
-          </router-link>
+
         </li>
-        <li>
-          <router-link :to="{'path':'/yhqCenter',query:{changeType:'td'}}">
+        <li @click="openYHQ('td')">
+
             <img src="../assets/tdproduct.png" alt />
-          </router-link>
+
         </li>
         <li class="current">
           <img src="../assets/jqqd.png" alt />
@@ -62,7 +60,8 @@ export default {
       yd_yestoday_get: 0,
       yd_yestoday_use: 0,
       yd: 0,
-      today_signed: false
+      today_signed: false,
+      isOpen:false
     };
   },
   mounted() {
@@ -70,6 +69,29 @@ export default {
     this._GetMyYd();
   },
   methods: {
+        openYHQ:function(val){
+        if(!this.isOpen){
+            Toast({
+          message: "暂未开放，敬请期待!",
+          iconClass: "icon icon-success"
+        });
+        }else{
+          switch (val) {
+            case 'sale':
+               this.$router.push({'path':'/yhqCenter',query:{changeType:'sale'}});
+              break;
+          
+            case 'mj':
+             this.$router.push({'path':'/yhqCenter',query:{changeType:'mj'}});
+              break;
+
+              case 'td':
+             this.$router.push({'path':'/yhqCenter',query:{changeType:'td'}});
+              break;
+          }
+         
+        }
+    },
     _GetMyYd() {
       this.$axios("post", this.$ports.yd.GetMyYd, {
         st: window.localStorage.getItem("loginInfo")

@@ -61,11 +61,11 @@
           <p>会员福利</p>
         </router-link>
       </div>
-      <div class="in_funProduct">
-        <router-link :to="{'path':'/yhqCenter'}">
+      <div class="in_funProduct"  @click="openYHQ">
+
           <img src="../assets/youhuiquan.png" />
           <p>优惠券</p>
-        </router-link>
+
       </div>
       <div class="in_funProduct">
         <router-link :to="{'path':'/active'}">
@@ -99,6 +99,7 @@
 
 
 <script>
+import { Toast } from "mint-ui";
 export default {
   name: "index",
   data() {
@@ -126,7 +127,8 @@ export default {
       id: "1,2,3,4",
       NewsApi: "//cmsapi.5211game.com/NewsService/YYService/YYNews.ashx",
       token: window.localStorage.getItem("loginInfo"),
-      bannerLists: []
+      bannerLists: [],
+      isOpen:false
     };
   },
   mounted() {
@@ -157,6 +159,16 @@ export default {
     }
   },
   methods: {
+    openYHQ:function(){
+        if(!this.isOpen){
+            Toast({
+          message: "暂未开放，敬请期待!",
+          iconClass: "icon icon-success"
+        });
+        }else{
+          this.$router.push({'path':'/yhqCenter'})
+        }
+    },
     getlistNews: function() {
       $.getJSON(
         this.NewsApi +

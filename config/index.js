@@ -12,7 +12,7 @@ module.exports = {
         assetsPublicPath: '/',
         proxyTable: {
             '/api': {
-                target: 'http://192.168.8.137:9294/yyking/', // 设置你调用的接口域名和端口号
+                target: 'https://yyking.5211game.com/', // 设置你调用的接口域名和端口号
                 changeOrigin: true, // 跨域
                 pathRewrite: {
                     '^/api': '/'

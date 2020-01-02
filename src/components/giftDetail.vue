@@ -52,12 +52,12 @@ export default {
       token:window.localStorage.getItem("loginInfo"),
       pt:0,
       id:0,
-      pageName:this.$route.query.pageTxt
+      pageName:decodeURI(this.$route.query.pageTxt)
     };
   },
   mounted() {
     //debugger;
-    this.$emit("getShopCode", "礼包详情", "${pageName}", true);
+    this.$emit("getShopCode", "礼包详情", ""+this.pageName+"", true);
     this.pt=this.$route.query.pt;
     this.id=this.$route.query.id;
     this._PkgDetail();

@@ -11,7 +11,7 @@
           <li>
             <div class="giftRecordleft">
               <img
-                src="https://act-1251844326.file.myqcloud.com/lottery_637105329539072157.jpg"
+                :src="item.img"
                 alt
               />
             </div>
@@ -43,7 +43,7 @@
             <a href="javascript:;" class="cope" @click="COPE(index)">{{copyName}}</a>
             <div class="giftRecordleft">
               <img
-                src="https://act-1251844326.file.myqcloud.com/lottery_637105329539072157.jpg"
+                :src="item.img"
                 alt
               />
             </div>

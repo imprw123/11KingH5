@@ -5,6 +5,8 @@
       <a
         href="javascript:;"
         class="sign"
+
+        v-bind:class="{'signCurrent' :today_signed == true}"
         v-text="today_signed == false? '未签到':'已签到'"
         @click="_Sign"
       ></a>
@@ -152,7 +154,7 @@ export default {
   font-size: 0.62rem;
 }
 .sign {
-  background-color: #5a5c6a;
+  background-color: #c1975c;
   width: 3rem;
   height: 0.6rem;
   line-height: 0.6rem;
@@ -163,6 +165,9 @@ export default {
   color: #fff;
   font-size: 0.26rem;
   margin-top: 0.1rem;
+}
+.signCurrent{
+  background-color: #5a5c6a;
 }
 .yaoTitle {
   font-size: 0.2rem;

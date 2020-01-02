@@ -24,7 +24,7 @@
                   <a href="javascript:;" class="lq" v-if="item.M_ITEM.rcv_flg == 0">立即领取</a>
                    <a href="javascript:;" class="bklq" v-if="item.M_ITEM.rcv_flg == -1">不可领取</a>
                     <a href="javascript:;" class="ylq" v-if="item.M_ITEM.rcv_flg == 1">已领取</a>
-                  <span>剩余:{{item.M_ITEM.remain}}</span>
+                  <span>剩余:{{item.M_ITEM.total >=0 ? item.M_ITEM.total:'不限量'}}</span>
                 </div>
               </div>
             </router-link>
@@ -54,7 +54,7 @@ export default {
       giftsLists:[],
       pageCount:0,
       pageIndex:1,
-      pageSize:2,
+      pageSize:10,
       token:window.localStorage.getItem("loginInfo")
     };
   },
@@ -77,6 +77,7 @@ export default {
       // 加载更多数据
        this.pageIndex++;
        console.log(this.pageIndex);
+       console.log('aa',this.pageCount);
        //debugger;
       if(this.pageIndex>this.pageCount){
            this.allLoaded = true; 
@@ -102,13 +103,15 @@ export default {
         page_size:this.pageSize
       })
         .then(function(response) {
-          console.log(response.data);
+          console.log(response);
          if(_that.pageIndex == 1){
           _that.giftsLists=response.data;
          }else{
-            _that.giftsLists= _that.giftsLists.concat(response.data);
+           if(!response.data){
+              _that.giftsLists= _that.giftsLists.concat(response.data);
+           }
          }
-          _that.pageCount=Math.ceil( Number(response.data.total ) / _that.pageSize);
+          _that.pageCount=Math.ceil( Number(response.total ) / _that.pageSize);
          // console.log( _that.pageCount);
         })
         .catch(function(error) {

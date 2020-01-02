@@ -67,7 +67,7 @@ export default {
     };
   },
   mounted() {
-    var _that=this;
+    var _that = this;
     window.onresize = function() {
       _that.getRem(720, 100);
     };
@@ -81,7 +81,7 @@ export default {
       html.style.fontSize = (oWidth / pwidth) * prem + "px";
     },
     getShopCode(pn, sel, istrue) {
-      // console.log(pn)
+       console.log(pn)
       this.pageName = pn;
       this.selected = sel;
       this.isShowBtn = istrue;
@@ -97,7 +97,7 @@ export default {
   },
   watch: {
     selected: function(newVal) {
-      console.log(newVal);
+      console.log('aa',newVal);
       switch (newVal) {
         case "首页":
           this.$router.replace({ path: "/" });
@@ -121,6 +121,11 @@ export default {
           break;
         case "我":
           this.$router.replace({ path: "/my" });
+          this.pageName = newVal;
+          this.isShowBtn = false;
+          break;
+        case "游戏礼包":
+          this.$router.replace({ path: "/gitfs" });
           this.pageName = newVal;
           this.isShowBtn = false;
           break;

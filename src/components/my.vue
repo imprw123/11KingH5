@@ -4,10 +4,20 @@
       <div class="inMyBoxMain">
         <div class="unload" v-show="!userInforFlag" v-on:click="_login">登录</div>
         <div class="userTx" v-show="userInforFlag">
+          <div class="iconLeve" v-show="k_level == 0" style="display:none;"></div>
+          <div class="notIconLeve" v-show="k_level > 0" style="display:none;"></div>
           <img v-bind:src="icon" alt />
           <p>{{user_name}}</p>
-          <a href="javascript:;" class="_loginOut" v-on:click="_loginOut">退出</a>
+          <div class="leveBox">
+            <em class="leve01" v-if="k_level == 1"></em>
+            <em class="leve02" v-if="k_level == 2"></em>
+            <em class="leve03" v-if="k_level == 3"></em>
+            <em class="leve04" v-if="k_level == 4"></em>
+            <em class="leve05" v-if="k_level == 5"></em>
+            <em class="leve06" v-if="k_level == 6"></em>
+          </div>
         </div>
+        <a href="javascript:;" class="_loginOut" v-on:click="_loginOut">退出</a>
         <div class="myBrithday" @click="openPicker">
           <i class="brithdayIcon"></i>
           <span
@@ -113,20 +123,20 @@
       <mt-popup v-model="changeVisble2" position="right">
         <div class="boxActive">
           <h2>妖妖KING细则</h2>
-        <p>1.妖妖KING等级对照表</p>
-        <p>K1 100000 K值</p>
-        <p>K2 500000 K值</p>
-        <p>K3 1500000 K值</p>
-        <p>K4 5000000 K值</p>
-        <p>K5 10000000 K值</p>
-        <p>K6 20000000 K值</p>
-        <p>2.每消费1RMB=100K值，在11平台进行消费的账号均可累计K值，有特殊说明的除外</p>
-        <p>3.KING值有效期为365天，如您在2019年12月6日消费1元获得100K值，则该K值会365天后失效（具体变化可在会员中心查看K值记录）</p>
-        <p>4.KING会员可领取对应等级的福利及礼包（详情见会员中心，依实际情况调整）</p>
-        <p>5.不同等级KING会员，兑换部分礼包时，所享受的折扣价格不同</p>
-        <p>6.KING会员可在会员中心设置生日，每年生日月可领取生日礼包，生日仅可设置一次</p>
-        <p>7.KING会员等级在本账号累计，不可转让</p>
-        <p>8.如使用赠送功能，则赠送者账号增加对应K值，被赠送者不可增加</p>
+          <p>1.妖妖KING等级对照表</p>
+          <p>K1 100000 K值</p>
+          <p>K2 500000 K值</p>
+          <p>K3 1500000 K值</p>
+          <p>K4 5000000 K值</p>
+          <p>K5 10000000 K值</p>
+          <p>K6 20000000 K值</p>
+          <p>2.每消费1RMB=100K值，在11平台进行消费的账号均可累计K值，有特殊说明的除外</p>
+          <p>3.KING值有效期为365天，如您在2019年12月6日消费1元获得100K值，则该K值会365天后失效（具体变化可在会员中心查看K值记录）</p>
+          <p>4.KING会员可领取对应等级的福利及礼包（详情见会员中心，依实际情况调整）</p>
+          <p>5.不同等级KING会员，兑换部分礼包时，所享受的折扣价格不同</p>
+          <p>6.KING会员可在会员中心设置生日，每年生日月可领取生日礼包，生日仅可设置一次</p>
+          <p>7.KING会员等级在本账号累计，不可转让</p>
+          <p>8.如使用赠送功能，则赠送者账号增加对应K值，被赠送者不可增加</p>
         </div>
       </mt-popup>
     </div>
@@ -154,9 +164,10 @@ export default {
       isClicked: false,
       year: "",
       birthday: "",
-      changeVisble1:false,
-      changeVisble2:false,
-      popupVisible: false
+      changeVisble1: false,
+      changeVisble2: false,
+      popupVisible: false,
+      k_level: 0
     };
   },
   created() {
@@ -222,6 +233,7 @@ export default {
         .then(function(response) {
           //  debugger;
           console.log(response.data);
+          _that.k_level = response.data.k_level;
           _that.$store.dispatch("USERNAME", response.data.user_name);
           _that.$store.dispatch("USERIMGSRC", response.data.icon);
           _that.birthday = response.data.birthday;
@@ -301,12 +313,12 @@ export default {
         });
     },
     wxOpen: function(val) {
-      if(val == 'wx'){
-         this.changeVisble1 = this.popupVisible=true;
-      }else if(val == 'active'){
-          this.changeVisble2 = this.popupVisible=true;
+      if (val == "wx") {
+        this.changeVisble1 = this.popupVisible = true;
+      } else if (val == "active") {
+        this.changeVisble2 = this.popupVisible = true;
       }
-      
+
       // var ua = navigator.userAgent.toLowerCase();
       // if (ua.match(/MicroMessenger/i) != "micromessenger") {
 
@@ -348,13 +360,68 @@ export default {
 }
 .inMyBoxMain {
   width: 6.6rem;
-  height: 3rem;
+  height: 3.2rem;
   background-color: #fff;
   border-radius: 0.15rem;
   position: absolute;
-  top: 0.2rem;
+  top: 0rem;
   left: 50%;
   margin-left: -3.3rem;
+}
+.leveBox {
+  width: 100%;
+  height: 0.2rem;
+  overflow: hidden;
+  zoom: 1;
+  margin-top: 0.05rem;
+}
+.leveBox .leve01 {
+  width: 0.95rem;
+  height: 0.2rem;
+  display: block;
+  background: url(../assets/1.png);
+  background-size: cover;
+  margin: 0 auto;
+}
+.leveBox .leve02 {
+  width: 0.95rem;
+  height: 0.2rem;
+  display: block;
+  background: url(../assets/2.png);
+  background-size: cover;
+  margin: 0 auto;
+}
+.leveBox .leve03 {
+  width: 0.95rem;
+  height: 0.2rem;
+  display: block;
+  background: url(../assets/3.png);
+  background-size: cover;
+  margin: 0 auto;
+}
+.leveBox .leve04 {
+  width: 0.95rem;
+  height: 0.2rem;
+  display: block;
+  background: url(../assets/4.png);
+  background-size: cover;
+  margin: 0 auto;
+}
+.leveBox .leve05 {
+  width: 0.95rem;
+  height: 0.2rem;
+  display: block;
+  background: url(../assets/5.png);
+  background-size: cover;
+  margin: 0 auto;
+}
+.leveBox .leve06 {
+  width: 0.95rem;
+  height: 0.2rem;
+  display: block;
+  background: url(../assets/6.png);
+  background-size: cover;
+  margin: 0 auto;
 }
 .myTab {
   width: 6.6rem;
@@ -490,9 +557,32 @@ export default {
 }
 .inMyBoxMain .userTx {
   width: 1.4rem;
-  height: 1.9rem;
+  height: 2.2rem;
   margin: 0 auto;
   margin-top: 0.5rem;
+  position: relative;
+}
+.iconLeve {
+  width: 0.68rem;
+  height: 0.5rem;
+  display: block;
+  background: url(../assets/leve0.png);
+  position: absolute;
+  top: -0.3rem;
+  left: 50%;
+  margin-left: -0.34rem;
+  background-size: cover;
+}
+.notIconLeve {
+  width: 0.68rem;
+  height: 0.5rem;
+  display: block;
+  background: url(../assets/notleve0.png);
+  position: absolute;
+  top: -0.3rem;
+  left: 50%;
+  margin-left: -0.34rem;
+  background-size: cover;
 }
 .inMyBoxMain .userTx img {
   display: block;
@@ -531,12 +621,12 @@ export default {
   width: 5rem;
   height: 5rem;
 }
-.boxActive{
-  width:5.6rem;
+.boxActive {
+  width: 5.6rem;
   padding: 0.5rem;
   text-align: center;
 }
-.boxActive p{
+.boxActive p {
   line-height: 0.4rem;
   text-align: justify;
 }

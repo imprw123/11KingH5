@@ -6,7 +6,10 @@
         <p @click="test('tab-container2')" v-bind:class="{'current':active == 'tab-container2'}">节日</p>
         <p @click="test('tab-container3')" v-bind:class="{'current':active == 'tab-container3'}">生日</p>
       </div>
-      <div class="page-tab-container"  v-show="festivalFeatured.length !=0 && festivalFeatured != null">
+      <div
+        class="page-tab-container"
+        v-show="festivalFeatured.length !=0 && festivalFeatured != null"
+      >
         <div class="giftsBoxFuli">
           <mt-loadmore
             @top-status-change="handleTopChange"
@@ -53,7 +56,7 @@
                       v-if="item.rcv_flg == 1"
                       @click="_RcvFestivalPkg(item.privilege_type,item.pid,item.id)"
                     >已领取</a>
-                    <span>剩余:{{item.remain}}</span>
+                    <span>剩余:{{item.total>=0?item.total:'不限量'}}</span>
                   </div>
                   <div class="infor">
                     <span>每个账号限兑1次</span>
@@ -72,8 +75,8 @@
         </div>
       </div>
     </div>
-      <div class="noListbg"  v-show="festivalFeatured.length ==0 || festivalFeatured == null">
-        <img src="../assets/nolist.jpg" alt="">
+    <div class="noListbg" v-show="festivalFeatured.length ==0 || festivalFeatured == null">
+      <img src="../assets/nolist.jpg" alt />
     </div>
   </div>
 </template>
@@ -87,7 +90,7 @@ export default {
       active: "tab-container1",
       swipeable: true,
       pageIndex: 1,
-      pageSize: 10,
+      pageSize: 4,
       festivalFeatured: [],
       pageCount: "",
       allLoaded: false,
@@ -157,9 +160,13 @@ export default {
         .then(response => {
           console.log(response);
           if (this.pageIndex == 1) {
-             this.festivalFeatured = response.data;
+            this.festivalFeatured = response.data;
           } else {
-            this.festivalFeatured = this.festivalFeatured.concat(response.data);
+            if (!response.data) {
+              this.festivalFeatured = this.festivalFeatured.concat(
+                response.data
+              );
+            }
           }
           this.pageCount = Math.ceil(Number(response.total) / this.pageSize);
         })
@@ -168,7 +175,7 @@ export default {
         });
     },
     //生日领取
-    _RcvFestivalPkg: function(ptid,val,id) {
+    _RcvFestivalPkg: function(ptid, val, id) {
       if (this.sp == 602) {
         this.$axios("post", this.$ports.fuli.RcvFestivalPkg, {
           id: val,
@@ -185,22 +192,22 @@ export default {
             console.log(error);
           });
       } else {
-        this._RcvPkg(ptid,val,id)
+        this._RcvPkg(ptid, val, id);
       }
     },
     //其他领取
-    _RcvPkg: function(ptid,val,id) {
+    _RcvPkg: function(ptid, val, id) {
       if (!this.token) {
         Toast({
           message: "请先登录!",
           iconClass: "icon icon-success"
         });
-        return ;
+        return;
       }
       this.$axios("post", this.$ports.gifts.RcvPkg, {
-        st:this.token,
+        st: this.token,
         pt: ptid,
-        id:id
+        id: id
       })
         .then(response => {
           console.log(response);
@@ -348,17 +355,17 @@ export default {
 .page-tab-container {
   margin-top: 50px;
 }
-.noListbg{
+.noListbg {
   position: absolute;
-  width:6rem;
+  width: 6rem;
   height: 4.5rem;
-  top:50%;
+  top: 50%;
   left: 50%;
   margin-left: -3rem;
-  margin-top:-2.25rem;
+  margin-top: -2.25rem;
 }
-.noListbg img{
-  width:6rem;
+.noListbg img {
+  width: 6rem;
   height: 4.5rem;
 }
 </style>

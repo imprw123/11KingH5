@@ -8,9 +8,9 @@
       </div>
       <p class="FlName">{{WeekFree.name}}</p>
       <p class="FlBtn">
-        <a href="javascript:;" class="lq" v-if="rcv_flg == 0" @click="_RcvPkg(WeekFree.privilege_type,WeekFree.id)">立即领取</a>
-        <a href="javascript:;" class="bklq" v-if="rcv_flg == -1" @click="_RcvPkg(WeekFree.privilege_type,WeekFree.id)">不可领取</a>
-        <a href="javascript:;" class="ylq" v-if="rcv_flg == 1" @click="_RcvPkg(WeekFree.privilege_type,WeekFree.id)">已领取</a>
+        <a href="javascript:;" class="lq" v-if="rcv_flg == 0" @click="_RcvPkg(WeekFree.privilege_type,WeekFree.id)">{{WeekFree.privilege_type == 3? '立即兑换':'立即领取'}}</a>
+        <a href="javascript:;" class="bklq" v-if="rcv_flg == -1" @click="_RcvPkg(WeekFree.privilege_type,WeekFree.id)">{{WeekFree.privilege_type == 3? '不可兑换':'不可领取'}}</a>
+        <a href="javascript:;" class="ylq" v-if="rcv_flg == 1" @click="_RcvPkg(WeekFree.privilege_type,WeekFree.id)">{{WeekFree.privilege_type == 3? '已兑换':'已领取'}}</a>
       </p>
       <p class="FlXh" v-show="WeekFree.privilege_type == 3">{{'消耗'+WeekFree.yd+'妖豆'}}</p>
       <p class="FlDh">每周限兑一次</p>
@@ -42,9 +42,9 @@
                    <em>剩余:{{item.M_ITEM.total >=0 ? item.M_ITEM.total:'不限量' }}</em>
                 </p>
                 <p>
-                  <a href="javascript:;" class="ljlq" v-if="item.M_ITEM.rcv_flg == 0" @click="_RcvPkg(item.M_ITEM.privilege_type,item.M_ITEM.id)">立即领取</a>
-                  <a href="javascript:;" class="bklq" v-if="item.M_ITEM.rcv_flg == -1" @click="_RcvPkg(item.M_ITEM.privilege_type,item.M_ITEM.id)">不可领取</a>
-                  <a href="javascript:;" class="ylq" v-if="item.M_ITEM.rcv_flg == 1" @click="_RcvPkg(item.M_ITEM.privilege_type,item.M_ITEM.id)">已领取</a>
+                  <a href="javascript:;" class="ljlq" v-if="item.M_ITEM.rcv_flg == 0" @click="_RcvPkg(item.M_ITEM.privilege_type,item.M_ITEM.id)">{{item.M_ITEM.privilege_type == 3? '立即兑换':'立即领取'}}</a>
+                  <a href="javascript:;" class="bklq" v-if="item.M_ITEM.rcv_flg == -1" @click="_RcvPkg(item.M_ITEM.privilege_type,item.M_ITEM.id)">{{item.M_ITEM.privilege_type == 3? '不可兑换':'不可领取'}}</a>
+                  <a href="javascript:;" class="ylq" v-if="item.M_ITEM.rcv_flg == 1" @click="_RcvPkg(item.M_ITEM.privilege_type,item.M_ITEM.id)">{{item.M_ITEM.privilege_type == 3? '已兑换':'已领取'}}</a>
                 </p>
               </div>
             </li>

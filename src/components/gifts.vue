@@ -21,9 +21,9 @@
                 <p class="giftsName">{{item.M_ITEM.name}}</p>
                 <p class="giftsInfor">{{item.M_ITEM.constraint}}</p>
                 <div class="btnBOx">
-                  <a href="javascript:;" class="lq" v-if="item.M_ITEM.rcv_flg == 0">立即领取</a>
-                   <a href="javascript:;" class="bklq" v-if="item.M_ITEM.rcv_flg == -1">不可领取</a>
-                    <a href="javascript:;" class="ylq" v-if="item.M_ITEM.rcv_flg == 1">已领取</a>
+                  <a href="javascript:;" class="lq" v-if="item.M_ITEM.rcv_flg == 0">{{item.M_ITEM.privilege_type == 3? '立即兑换':'立即领取'}}</a>
+                   <a href="javascript:;" class="bklq" v-if="item.M_ITEM.rcv_flg == -1">{{item.M_ITEM.privilege_type == 3? '不可兑换':'不可领取'}}</a>
+                    <a href="javascript:;" class="ylq" v-if="item.M_ITEM.rcv_flg == 1">{{item.M_ITEM.privilege_type == 3? '已兑换':'已领取'}}</a>
                   <span>剩余:{{item.M_ITEM.total >=0 ? item.M_ITEM.total:'不限量'}}</span>
                 </div>
               </div>
@@ -54,7 +54,7 @@ export default {
       giftsLists:[],
       pageCount:0,
       pageIndex:1,
-      pageSize:10,
+      pageSize:4,
       token:window.localStorage.getItem("loginInfo")
     };
   },
@@ -107,9 +107,7 @@ export default {
          if(_that.pageIndex == 1){
           _that.giftsLists=response.data;
          }else{
-           if(!response.data){
-              _that.giftsLists= _that.giftsLists.concat(response.data);
-           }
+          _that.giftsLists= _that.giftsLists.concat(response.data);
          }
           _that.pageCount=Math.ceil( Number(response.total ) / _that.pageSize);
          // console.log( _that.pageCount);

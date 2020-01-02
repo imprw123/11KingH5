@@ -31,7 +31,8 @@
                   <p class="giftsName">{{item.name}}</p>
                   <p class="giftsInfor">
                     领取条件:
-                    <em>{{item.constraint}}</em>
+                    <em v-show="active == 'tab-container3'">{{'生日当月可领取'}}</em>
+                     <em v-show="active != 'tab-container3'">{{item.constraint}}</em>
                   </p>
                   <p class="giftsInfor">
                     有效期:
@@ -43,19 +44,19 @@
                       class="lq"
                       v-if="item.rcv_flg == 0"
                       @click="_RcvFestivalPkg(item.privilege_type,item.pid,item.id)"
-                    >立即领取</a>
+                    >{{item.privilege_type == 3?'立即兑换':'立即领取'}}</a>
                     <a
                       href="javascript:;"
                       class="bklq"
                       v-if="item.rcv_flg == -1"
                       @click="_RcvFestivalPkg(item.privilege_type,item.pid,item.id)"
-                    >不可领取</a>
+                    >{{item.privilege_type == 3?'不可兑换':'不可领取'}}</a>
                     <a
                       href="javascript:;"
                       class="ylq"
                       v-if="item.rcv_flg == 1"
                       @click="_RcvFestivalPkg(item.privilege_type,item.pid,item.id)"
-                    >已领取</a>
+                    >{{item.privilege_type == 3?'已兑换':'已领取'}}</a>
                     <span>剩余:{{item.total>=0?item.total:'不限量'}}</span>
                   </div>
                   <div class="infor">
@@ -155,18 +156,16 @@ export default {
       this.$axios("post", this.$ports.fuli.GetFestivalLst, {
         sp: this.sp,
         page_index: this.pageIndex,
-        page_size: this.pageSize
+        page_size: this.pageSize,
+        st:this.token
       })
         .then(response => {
           console.log(response);
           if (this.pageIndex == 1) {
             this.festivalFeatured = response.data;
           } else {
-            if (!response.data) {
-              this.festivalFeatured = this.festivalFeatured.concat(
-                response.data
-              );
-            }
+             this.festivalFeatured = this.festivalFeatured.concat(response.data);
+              console.log(this.festivalFeatured)
           }
           this.pageCount = Math.ceil(Number(response.total) / this.pageSize);
         })
